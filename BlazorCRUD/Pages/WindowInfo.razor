@@ -1,0 +1,53 @@
+﻿@page "/WindowInfo"
+@using BlazorTestApp.Data
+@inject WindowService windowService
+
+<NavLink class="nav-link" href="AddWindow">
+    <span class="oi oi-plus" aria-hidden="true">Add New</span>
+</NavLink>
+
+<h1>Window Info</h1>
+@if (WindowObj is null)
+{
+    <p><em>Loading... !</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Window Id</th>
+                <th>Name</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var ord in WindowObj)
+            {
+                <tr>
+                    <td>@ord.OrderID</td>
+                    <td>@ord.Name</td>
+                  @*  <td>@ord.State</td>*@
+
+                    @*  <td>
+            <a class="nav-link" href="EditEmployee/@ord.OrderID">
+            <span class="oi oi-pencil" aria-hidden="true">Edit</span>
+            </a>
+            <a class="nav-link" href="Delete/@ord.OrderID">
+            <span class="oi oi-trash" aria-hidden="true">Delete</span>
+            </a>
+            </td>*@
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+@code {
+    List<Window> WindowObj;
+    protected override async Task OnInitializedAsync()
+    {
+        WindowObj = await Task.Run(() => windowService.GetAllWindowAsync());
+    }
+}

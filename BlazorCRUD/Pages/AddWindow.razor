@@ -1,0 +1,73 @@
+﻿@page "/AddWindow"
+@using BlazorTestApp.Data
+@inject WindowService windowService
+@inject NavigationManager NavigationManager
+
+<h2>Add Window</h2>
+<hr />
+
+<form>
+    <div class="row">
+        <div class="col-md-8">
+           
+            <div class="form-group">
+                <label for="Name" class="control-label">Name</label>
+                <input form="Name" class="form-control" @bind="@obj.Name" />
+            </div>
+            <div class="form-group">
+                <label for="Name" class="control-label">No of Window</label>
+                <input form="Name" class="form-control" @bind="@obj.QuantityOfWindows" />
+            </div>
+            <div class="form-group">
+                <label for="Name" class="control-label">Total Sub Element</label>
+                <input form="Name" class="form-control" @bind="@obj.TotalSubElements" />
+            </div>
+            <div class="form-group">
+                <label for="Publisher" class="control-label">
+                    Order By
+                </label>
+                <select for="Publisher" class="form-control"
+                        @bind="@obj.OrderID">
+                    <option value=0 disabled selected hidden>
+                        [Select Name]
+                    </option>
+                    @foreach (var publisher in orders)
+                    {
+                        <option value="@publisher.OrderID">
+                            @publisher.Name
+                        </option>
+                    }
+                </select>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <input type="button" class="btn btn-primary" @onclick="@CreateWindow" value="Save"/> 
+                <input type="button" class="btn btn-primary" @onclick="@Cancel" value="Cancel"/>
+            </div>
+        </div>
+    </div>
+</form>
+
+@code {
+    Window obj = new Window();
+    List<Order> orders = new List<Order>();
+    protected override async Task OnInitializedAsync()
+    {
+
+        orders = await windowService.GetAllOrdersAsync();
+    }
+    protected async void CreateWindow()
+    {
+        await windowService.InsertWindowAsync(obj);
+        NavigationManager.NavigateTo("Employees");
+    }
+    void Cancel()
+    {
+       // NavigationManager.NavigateTo("Employees");
+    }
+}

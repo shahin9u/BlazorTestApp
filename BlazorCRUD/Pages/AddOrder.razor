@@ -1,0 +1,45 @@
+﻿@page "/AddOrder"
+@using BlazorTestApp.Data
+@inject OrderService orderService
+@inject NavigationManager NavigationManager
+
+<h2>Add Order</h2>
+<hr />
+
+<form>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="form-group">
+                <label for="Name" class="control-label">Name</label>
+                <input form="Name" class="form-control" @bind="@obj.Name" />
+            </div>
+       
+            <div class="form-group">
+                <label for="Designation" class="control-label">State</label>
+                <input form="Designation" class="form-control" @bind="@obj.State" />
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <input type="button" class="btn btn-primary" @onclick="@CreateOrder" value="Save" />
+                <input type="button" class="btn btn-primary" @onclick="@Cancel" value="Cancel"/>
+            </div>
+        </div>
+    </div>
+</form>
+
+@code {
+    Order obj = new Order();
+    protected async void CreateOrder()
+    {
+        await orderService.InsertOrderAsync(obj);
+        NavigationManager.NavigateTo("OrderInfo");
+    }
+    void Cancel()
+    {
+        NavigationManager.NavigateTo("Orders");
+    }
+}

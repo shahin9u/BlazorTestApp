@@ -1,0 +1,54 @@
+﻿@page "/OrderInfo"
+@using BlazorTestApp.Data
+@inject OrderService orderService
+
+<NavLink class="nav-link" href="AddOrder">
+    <span class="oi oi-plus" aria-hidden="true">Add New</span>
+</NavLink>
+
+<h1>Order Info</h1>
+@if (OrderObj is null)
+{
+    <p><em>Loading... !</em></p>
+}
+else
+{
+    <table class="table">
+            <thead>
+                <tr>
+                    <th>Order Id</th>
+                    <th>Name</th>
+                    <th>State</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+        <tbody>
+            @foreach (var ord in OrderObj)
+            {
+            <tr>
+                <td>@ord.OrderID</td>
+                <td>@ord.Name</td>
+                <td>@ord.State</td>
+               
+              @*  <td>
+                        <a class="nav-link" href="EditEmployee/@ord.OrderID">
+                        <span class="oi oi-pencil" aria-hidden="true">Edit</span>
+                    </a>
+                        <a class="nav-link" href="Delete/@ord.OrderID">
+                        <span class="oi oi-trash" aria-hidden="true">Delete</span>
+                    </a>
+                </td>*@
+            </tr>
+                }
+        </tbody>
+    </table>
+}
+
+
+@code {
+    List<Order> OrderObj;
+    protected override async Task OnInitializedAsync()
+    {
+        OrderObj = await Task.Run(() => orderService.GetAllOrdersAsync());
+    }
+}

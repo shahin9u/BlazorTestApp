@@ -1,0 +1,51 @@
+﻿@page "/SubElementInfo"
+@using BlazorTestApp.Data
+@inject SubElementService subelementService
+
+<NavLink class="nav-link" href="AddSubElement">
+    <span class="oi oi-plus" aria-hidden="true">Add New</span>
+</NavLink>
+
+<h1>SubElement Info</h1>
+@if (WindowObj is null)
+{
+    <p><em>Loading... !</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                    <th>SubElement Id</th>
+                    <th>Element</th>
+                <th>Type</th>
+                <th>Height</th>
+                <th>Width</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var ord in WindowObj)
+            {
+                <tr>
+                    <td>@ord.SubElementID</td>
+                    <td>@ord.Element</td>
+                   <td>@ord.Type</td>
+                    <td>@ord.Height</td>
+                    <td>@ord.Width</td>
+                   
+          
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+@code {
+    List<SubElement> WindowObj;
+    protected override async Task OnInitializedAsync()
+    {
+        WindowObj = await Task.Run(() => subelementService.GetAllSubElemetAsync());
+    }
+}
